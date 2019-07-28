@@ -9,10 +9,10 @@ import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @MappedSuperclass
-public abstract class BaseEntity
-{
+public abstract class BaseEntity {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date createdDate;
@@ -21,50 +21,41 @@ public abstract class BaseEntity
 
     private Status status;
 
-    public BaseEntity()
-    {
+    public BaseEntity() {
         this.createdDate = new Date();
         this.updatedDate = new Date();
         this.status = Status.Active;
     }
 
-    public Long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getCreatedDate()
-    {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate)
-    {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getUpdatedDate()
-    {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Date updatedDate)
-    {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status)
-    {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
