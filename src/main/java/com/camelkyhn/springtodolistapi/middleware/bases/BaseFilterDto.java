@@ -101,6 +101,13 @@ public class BaseFilterDto {
         return null;
     }
 
+    public Long getLongParameter(Map<String, String[]> data, String key) {
+        if (!isDataNull(data, key)) {
+            return Long.valueOf(data.get(key)[0]);
+        }
+        return null;
+    }
+
     public String getStringParameter(Map<String, String[]> data, String key) {
         if (!isDataNull(data, key)) {
             return data.get(key)[0];
