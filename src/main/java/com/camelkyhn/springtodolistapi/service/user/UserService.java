@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @Service
 public class UserService extends BaseService<IUserRepository, User> implements IService<User, UserDto, UserFilterDto> {
+
     private final IUserRepository repository;
     private final IRoleRepository roleRepository;
 
