@@ -4,15 +4,21 @@ public class Pagination {
 
     private Integer pageSize;
     private Integer pageNumber;
-    private Integer totalCount;
+    private Long totalCount;
 
     public Pagination() {
     }
 
-    public Pagination(Integer pageSize, Integer pageNumber, Integer totalCount) {
+    public Pagination(Integer pageSize, Integer pageNumber, Long totalCount) {
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
         this.totalCount = totalCount;
+    }
+
+    public Pagination(BaseFilterDto filterDto) {
+        this.pageSize = filterDto.getPageSize();
+        this.pageNumber = filterDto.getPageNumber();
+        this.totalCount = filterDto.getTotalCount();
     }
 
     public Integer getPageSize() {
@@ -31,11 +37,11 @@ public class Pagination {
         this.pageNumber = pageNumber;
     }
 
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 }
