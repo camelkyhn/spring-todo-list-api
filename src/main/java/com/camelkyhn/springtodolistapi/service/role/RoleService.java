@@ -8,7 +8,6 @@ import com.camelkyhn.springtodolistapi.middleware.dtos.role.RoleFilterDto;
 import com.camelkyhn.springtodolistapi.middleware.entities.Role;
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.EmptyIdException;
-import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -75,10 +74,6 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
     public Result<Role> create(@Valid RoleDto dto) {
         Result<Role> result = new Result<>();
         try {
-            if (dto == null) {
-                throw new InvalidModelStateException(Role.class.getSimpleName());
-            }
-
             Role role = new Role(dto.getName());
             result.Success(repository.save(role));
         } catch (Exception exception) {
@@ -91,10 +86,6 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
     public Result<Role> update(@Valid RoleDto dto) {
         Result<Role> result = new Result<>();
         try {
-            if (dto == null) {
-                throw new InvalidModelStateException(Role.class.getSimpleName());
-            }
-
             Optional<Role> existingRole = repository.findById(dto.getId());
             if (!existingRole.isPresent()) {
                 throw new NotFoundException(Role.class.getSimpleName());
