@@ -34,9 +34,9 @@ public class Result<T> {
         this.data = data;
     }
 
-    public void Success(T data, Pagination pagination) {
+    public void Success(T data, BaseFilterDto filterDto) {
         this.succeeded = true;
-        this.pagination = pagination;
+        this.pagination = new Pagination(filterDto);
         this.data = data;
     }
 
