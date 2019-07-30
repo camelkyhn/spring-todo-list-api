@@ -46,7 +46,7 @@ public class UserService extends BaseService<IUserRepository, User> implements I
                 throw new NotFoundException(User.class.getSimpleName());
             }
 
-            result.Success(repository.findById(id).get());
+            result.Success(user.get());
         } catch (Exception exception) {
             result.Error(exception);
         }
