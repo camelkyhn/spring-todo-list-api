@@ -83,10 +83,10 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
     }
 
     @Override
-    public Result<Role> update(@Valid RoleDto dto) {
+    public Result<Role> update(Long id, @Valid RoleDto dto) {
         Result<Role> result = new Result<>();
         try {
-            Optional<Role> existingRole = repository.findById(dto.getId());
+            Optional<Role> existingRole = repository.findById(id);
             if (!existingRole.isPresent()) {
                 throw new NotFoundException(Role.class.getSimpleName());
             }

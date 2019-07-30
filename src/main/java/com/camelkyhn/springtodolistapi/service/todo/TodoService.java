@@ -120,10 +120,10 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
     }
 
     @Override
-    public Result<Todo> update(@Valid TodoDto dto) {
+    public Result<Todo> update(Long id, @Valid TodoDto dto) {
         Result<Todo> result = new Result<>();
         try {
-            Optional<Todo> existingTodo = repository.findById(dto.getId());
+            Optional<Todo> existingTodo = repository.findById(id);
             if (!existingTodo.isPresent()) {
                 throw new NotFoundException(Todo.class.getSimpleName());
             }

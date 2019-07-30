@@ -82,10 +82,10 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
     }
 
     @Override
-    public Result<TodoList> update(@Valid TodoListDto dto) {
+    public Result<TodoList> update(Long id, @Valid TodoListDto dto) {
         Result<TodoList> result = new Result<>();
         try {
-            Optional<TodoList> existingTodoList = repository.findById(dto.getId());
+            Optional<TodoList> existingTodoList = repository.findById(id);
             if (!existingTodoList.isPresent()) {
                 throw new NotFoundException(TodoList.class.getSimpleName());
             }

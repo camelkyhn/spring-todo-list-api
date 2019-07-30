@@ -95,10 +95,10 @@ public class UserService extends BaseService<IUserRepository, User> implements I
     }
 
     @Override
-    public Result<User> update(@Valid UserDto dto) {
+    public Result<User> update(Long id, @Valid UserDto dto) {
         Result<User> result = new Result<>();
         try {
-            Optional<User> existingUser = repository.findById(dto.getId());
+            Optional<User> existingUser = repository.findById(id);
             if (!existingUser.isPresent()) {
                 throw new NotFoundException(User.class.getSimpleName());
             }
