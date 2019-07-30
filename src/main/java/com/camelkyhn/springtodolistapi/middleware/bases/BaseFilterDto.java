@@ -10,7 +10,7 @@ public class BaseFilterDto {
 
     private Integer pageNumber = 1;
 
-    private Integer totalCount;
+    private Long totalCount;
 
     private Boolean isAllData;
 
@@ -78,11 +78,11 @@ public class BaseFilterDto {
         }
     }
 
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
         return this.totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 
