@@ -10,14 +10,15 @@ import com.camelkyhn.springtodolistapi.middleware.entities.TodoList;
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.CanNotBeCompletedException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.EmptyIdException;
+import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import com.camelkyhn.springtodolistapi.service.todolist.ITodoListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,9 +92,13 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
     }
 
     @Override
-    public Result<Todo> create(@Valid TodoDto dto) {
+    public Result<Todo> create(TodoDto dto, BindingResult bindingResult) {
         Result<Todo> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Todo todo = new Todo();
             Optional<TodoList> todoList = todoListRepository.findById(dto.getTodoListId());
             if (!todoList.isPresent()) {
@@ -120,9 +125,13 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
     }
 
     @Override
-    public Result<Todo> update(Long id, @Valid TodoDto dto) {
+    public Result<Todo> update(Long id, TodoDto dto, BindingResult bindingResult) {
         Result<Todo> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Optional<Todo> existingTodo = repository.findById(id);
             if (!existingTodo.isPresent()) {
                 throw new NotFoundException(Todo.class.getSimpleName());

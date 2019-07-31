@@ -8,13 +8,14 @@ import com.camelkyhn.springtodolistapi.middleware.dtos.role.RoleFilterDto;
 import com.camelkyhn.springtodolistapi.middleware.entities.Role;
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.EmptyIdException;
+import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,9 +72,13 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
     }
 
     @Override
-    public Result<Role> create(@Valid RoleDto dto) {
+    public Result<Role> create(RoleDto dto, BindingResult bindingResult) {
         Result<Role> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Role role = new Role(dto.getName());
             result.Success(repository.save(role));
         } catch (Exception exception) {
@@ -83,9 +88,13 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
     }
 
     @Override
-    public Result<Role> update(Long id, @Valid RoleDto dto) {
+    public Result<Role> update(Long id, RoleDto dto, BindingResult bindingResult) {
         Result<Role> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Optional<Role> existingRole = repository.findById(id);
             if (!existingRole.isPresent()) {
                 throw new NotFoundException(Role.class.getSimpleName());

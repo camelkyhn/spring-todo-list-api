@@ -9,12 +9,13 @@ import com.camelkyhn.springtodolistapi.middleware.entities.TodoList;
 import com.camelkyhn.springtodolistapi.middleware.entities.User;
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.EmptyIdException;
+import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import com.camelkyhn.springtodolistapi.service.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,9 +64,13 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
     }
 
     @Override
-    public Result<TodoList> create(@Valid TodoListDto dto) {
+    public Result<TodoList> create(TodoListDto dto, BindingResult bindingResult) {
         Result<TodoList> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             TodoList todoList = new TodoList();
             Optional<User> user = userRepository.findById(dto.getAssignedUserId());
             if (!user.isPresent()) {
@@ -82,9 +87,13 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
     }
 
     @Override
-    public Result<TodoList> update(Long id, @Valid TodoListDto dto) {
+    public Result<TodoList> update(Long id, TodoListDto dto, BindingResult bindingResult) {
         Result<TodoList> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Optional<TodoList> existingTodoList = repository.findById(id);
             if (!existingTodoList.isPresent()) {
                 throw new NotFoundException(TodoList.class.getSimpleName());

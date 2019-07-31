@@ -9,14 +9,15 @@ import com.camelkyhn.springtodolistapi.middleware.entities.Role;
 import com.camelkyhn.springtodolistapi.middleware.entities.User;
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.EmptyIdException;
+import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateException;
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import com.camelkyhn.springtodolistapi.service.role.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,9 +84,13 @@ public class UserService extends BaseService<IUserRepository, User> implements I
     }
 
     @Override
-    public Result<User> create(@Valid UserDto dto) {
+    public Result<User> create(UserDto dto, BindingResult bindingResult) {
         Result<User> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             User user = new User(dto.getFirstName(), dto.getLastName(), dto.getUsername(), dto.getPassword());
             result.Success(repository.save(user));
         } catch (Exception exception) {
@@ -95,9 +100,13 @@ public class UserService extends BaseService<IUserRepository, User> implements I
     }
 
     @Override
-    public Result<User> update(Long id, @Valid UserDto dto) {
+    public Result<User> update(Long id, UserDto dto, BindingResult bindingResult) {
         Result<User> result = new Result<>();
         try {
+            if (bindingResult.hasErrors()) {
+                throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
+            }
+
             Optional<User> existingUser = repository.findById(id);
             if (!existingUser.isPresent()) {
                 throw new NotFoundException(User.class.getSimpleName());
