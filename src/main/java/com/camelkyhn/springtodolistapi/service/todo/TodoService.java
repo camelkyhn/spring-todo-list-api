@@ -61,7 +61,7 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
             Specification<Todo> specification = (Specification<Todo>) (root, criteriaQuery, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
                 if (filterDto.getName() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), filterDto.getName())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("name"), "%" + filterDto.getName() + "%")));
                 }
 
                 if (filterDto.getCompleted() != null) {
@@ -80,6 +80,7 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("dependentTodo.id"), filterDto.getDependentTodoId())));
                 }
 
+                predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             List<Todo> resultList = applyPagination(repository, filterDto, specification);

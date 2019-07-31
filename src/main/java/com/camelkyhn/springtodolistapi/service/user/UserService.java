@@ -61,17 +61,18 @@ public class UserService extends BaseService<IUserRepository, User> implements I
             Specification<User> specification = (Specification<User>) (root, criteriaQuery, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
                 if (filterDto.getFirstName() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("firstName"), filterDto.getFirstName())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("firstName"), "%" + filterDto.getFirstName() + "%")));
                 }
 
                 if (filterDto.getLastName() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("lastName"), filterDto.getLastName())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("lastName"), "%" + filterDto.getLastName() + "%")));
                 }
 
                 if (filterDto.getUsername() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("username"), filterDto.getUsername())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("username"), "%" + filterDto.getUsername() + "%")));
                 }
 
+                predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             List<User> resultList = applyPagination(repository, filterDto, specification);

@@ -57,9 +57,10 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
             Specification<Role> specification = (Specification<Role>) (root, criteriaQuery, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
                 if (filterDto.getName() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), filterDto.getName())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("name"), "%" + filterDto.getName() + "%")));
                 }
 
+                predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             List<Role> resultList = applyPagination(repository, filterDto, specification);

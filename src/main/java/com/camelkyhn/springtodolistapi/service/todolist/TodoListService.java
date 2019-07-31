@@ -13,9 +13,12 @@ import com.camelkyhn.springtodolistapi.middleware.exceptions.InvalidModelStateEx
 import com.camelkyhn.springtodolistapi.middleware.exceptions.NotFoundException;
 import com.camelkyhn.springtodolistapi.service.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +58,21 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
     public Result<List<TodoList>> list(TodoListFilterDto filterDto) {
         Result<List<TodoList>> result = new Result<>();
         try {
-            result.Success(repository.findAll());
+            Specification<TodoList> specification = (Specification<TodoList>) (root, criteriaQuery, criteriaBuilder) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (filterDto.getName() != null) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("name"), "%" + filterDto.getName() + "%")));
+                }
+
+                if (filterDto.getAssignedUsername() != null) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("assignedUser.username"), "%" + filterDto.getAssignedUsername() + "%")));
+                }
+
+                predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            List<TodoList> resultList = applyPagination(repository, filterDto, specification);
+            result.Success(resultList, filterDto);
         } catch (Exception exception) {
             result.Error(exception);
         }
