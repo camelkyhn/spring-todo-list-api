@@ -99,7 +99,7 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
                 throw new NotFoundException(Role.class.getSimpleName());
             }
 
-            Role role = new Role();
+            Role role = existingRole.get();
             role.setName(dto.getName());
             role.setStatus(dto.getStatus());
             result.Success(repository.save(role));
