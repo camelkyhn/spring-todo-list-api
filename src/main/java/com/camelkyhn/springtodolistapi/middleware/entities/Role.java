@@ -1,6 +1,7 @@
 package com.camelkyhn.springtodolistapi.middleware.entities;
 
 import com.camelkyhn.springtodolistapi.middleware.bases.BaseEntity;
+import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
@@ -13,11 +14,10 @@ public class Role extends BaseEntity {
     private String name;
 
     public Role() {
-        super();
     }
 
-    public Role(String name) {
-        super();
+    public Role(String name, Status status) {
+        super(status);
         this.name = name;
     }
 

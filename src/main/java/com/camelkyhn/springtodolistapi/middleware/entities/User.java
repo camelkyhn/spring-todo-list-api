@@ -1,6 +1,7 @@
 package com.camelkyhn.springtodolistapi.middleware.entities;
 
 import com.camelkyhn.springtodolistapi.middleware.bases.BaseEntity;
+import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
@@ -41,11 +42,10 @@ public class User extends BaseEntity {
     private List<Role> roles = new ArrayList<>();
 
     public User() {
-        super();
     }
 
-    public User(String firstName, String lastName, String username, String password) {
-        super();
+    public User(String firstName, String lastName, String username, String password, Status status) {
+        super(status);
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

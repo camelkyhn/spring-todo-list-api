@@ -1,6 +1,8 @@
 package com.camelkyhn.springtodolistapi.middleware.bases;
 
 import com.camelkyhn.springtodolistapi.middleware.enums.Status;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,16 +17,19 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreatedDate
     private Date createdDate;
 
+    @LastModifiedDate
     private Date updatedDate;
 
     private Status status;
 
     public BaseEntity() {
-        this.createdDate = new Date();
-        this.updatedDate = new Date();
-        this.status = Status.Active;
+    }
+
+    public BaseEntity(Status status) {
+        this.status = status;
     }
 
     public Long getId() {

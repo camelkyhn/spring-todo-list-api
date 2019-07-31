@@ -1,6 +1,7 @@
 package com.camelkyhn.springtodolistapi.middleware.entities;
 
 import com.camelkyhn.springtodolistapi.middleware.bases.BaseEntity;
+import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
@@ -43,11 +44,10 @@ public class Todo extends BaseEntity {
     private List<Todo> relatedTodos = new ArrayList<>();
 
     public Todo() {
-        super();
     }
 
-    public Todo(String name, String description, Date deadline, boolean completed, TodoList todoList, Todo dependentTodo) {
-        super();
+    public Todo(String name, String description, Date deadline, boolean completed, TodoList todoList, Todo dependentTodo, Status status) {
+        super(status);
         this.name = name;
         this.description = description;
         this.deadline = deadline;
