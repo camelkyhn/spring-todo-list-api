@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +78,7 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
 
             todoList.setName(dto.getName());
             todoList.setAssignedUser(user.get());
+            todoList.setStatus(dto.getStatus());
             result.Success(repository.save(todoList));
         } catch (Exception exception) {
             result.Error(exception);
@@ -108,7 +108,6 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
             todoList.setName(dto.getName());
             todoList.setAssignedUser(user.get());
             todoList.setStatus(dto.getStatus());
-            todoList.setUpdatedDate(new Date());
             result.Success(repository.save(todoList));
         } catch (Exception exception) {
             result.Error(exception);
@@ -130,7 +129,6 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
             }
 
             todoList.setStatus(Status.Deleted);
-            todoList.setUpdatedDate(new Date());
             repository.save(todoList);
             result.Success(true);
         } catch (Exception exception) {

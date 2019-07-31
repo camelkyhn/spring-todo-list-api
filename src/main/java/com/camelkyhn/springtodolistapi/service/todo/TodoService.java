@@ -20,7 +20,6 @@ import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,6 +116,7 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
             todo.setDescription(dto.getDescription());
             todo.setDeadline(dto.getDeadline());
             todo.setTodoList(todoList.get());
+            todo.setStatus(dto.getStatus());
             result.Success(repository.save(todo));
         } catch (Exception exception) {
             result.Error(exception);
@@ -161,7 +161,6 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
             todo.setTodoList(todoList.get());
             todo.setCompleted(dto.isCompleted());
             todo.setStatus(dto.getStatus());
-            todo.setUpdatedDate(new Date());
             result.Success(repository.save(todo));
         } catch (Exception exception) {
             result.Error(exception);
@@ -183,7 +182,6 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
             }
 
             todo.setStatus(Status.Deleted);
-            todo.setUpdatedDate(new Date());
             repository.save(todo);
             result.Success(true);
         } catch (Exception exception) {

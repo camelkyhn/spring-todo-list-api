@@ -17,7 +17,6 @@ import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +78,7 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
                 throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
             }
 
-            Role role = new Role(dto.getName());
+            Role role = new Role(dto.getName(), dto.getStatus());
             result.Success(repository.save(role));
         } catch (Exception exception) {
             result.Error(exception);
@@ -103,7 +102,6 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
             Role role = new Role();
             role.setName(dto.getName());
             role.setStatus(dto.getStatus());
-            role.setUpdatedDate(new Date());
             result.Success(repository.save(role));
         } catch (Exception exception) {
             result.Error(exception);
@@ -125,7 +123,6 @@ public class RoleService extends BaseService<IRoleRepository, Role> implements I
             }
 
             role.setStatus(Status.Deleted);
-            role.setUpdatedDate(new Date());
             repository.save(role);
             result.Success(true);
         } catch (Exception exception) {

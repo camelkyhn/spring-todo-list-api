@@ -19,7 +19,6 @@ import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +90,7 @@ public class UserService extends BaseService<IUserRepository, User> implements I
                 throw new InvalidModelStateException(bindingResult.getAllErrors().get(0));
             }
 
-            User user = new User(dto.getFirstName(), dto.getLastName(), dto.getUsername(), dto.getPassword());
+            User user = new User(dto.getFirstName(), dto.getLastName(), dto.getUsername(), dto.getPassword(), dto.getStatus());
             result.Success(repository.save(user));
         } catch (Exception exception) {
             result.Error(exception);
@@ -122,7 +121,6 @@ public class UserService extends BaseService<IUserRepository, User> implements I
             user.setUsername(dto.getUsername());
             user.setPassword(dto.getPassword());
             user.setStatus(dto.getStatus());
-            user.setUpdatedDate(new Date());
             result.Success(repository.save(user));
         } catch (Exception exception) {
             result.Error(exception);
@@ -159,7 +157,6 @@ public class UserService extends BaseService<IUserRepository, User> implements I
             }
 
             user.setStatus(Status.Deleted);
-            user.setUpdatedDate(new Date());
             repository.save(user);
             result.Success(true);
         } catch (Exception exception) {
