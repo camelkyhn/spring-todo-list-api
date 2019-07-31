@@ -1,5 +1,6 @@
 package com.camelkyhn.springtodolistapi.middleware.bases;
 
+import com.camelkyhn.springtodolistapi.middleware.enums.Status;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,6 +18,7 @@ public class BaseService<TRepository extends JpaSpecificationExecutor<TEntity>, 
             predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("status"), filterDto.getStatus())));
         }
 
+        predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("status"), Status.Deleted)));
         return predicates;
     }
 
