@@ -69,10 +69,12 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("completed"), filterDto.getCompleted())));
                 }
 
-                if (filterDto.getExpired() != null && filterDto.getExpired()) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), new Date())));
-                } else {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo(root.get("deadline"), new Date())));
+                if (filterDto.getExpired() != null) {
+                    if (filterDto.getExpired()) {
+                        predicates.add(criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), new Date())));
+                    } else {
+                        predicates.add(criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo(root.get("deadline"), new Date())));
+                    }
                 }
 
                 if (filterDto.getTodoListId() != null) {
