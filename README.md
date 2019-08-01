@@ -2,7 +2,7 @@
 
   A restful backend service with spring framework. This project was initialized with * [SPRING INITIALIZR](https://start.spring.io/). Only included "Cloud OAuth2", "h2", "web", "security" and "jpa" packages. 
 
-  This project is designed to be a microservice to communicate with this * [React Project](https://github.com/camelkyhn/todo-list-react). Make sure you have installed both and make them run together. 
+  This project is designed to be a microservice to communicate with this * [React Project](https://github.com/camelkyhn/react-todo-list). Make sure you have installed both and make them run together. 
 	
 This api project will be running on 
 ```
