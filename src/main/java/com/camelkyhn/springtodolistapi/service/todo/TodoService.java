@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,16 +69,18 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("completed"), filterDto.getCompleted())));
                 }
 
-                if (filterDto.getExpired() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("expired"), filterDto.getExpired())));
+                if (filterDto.getExpired() != null && filterDto.getExpired()) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), new Date())));
+                } else {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo(root.get("deadline"), new Date())));
                 }
 
                 if (filterDto.getTodoListId() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("todoList.id"), filterDto.getTodoListId())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("todoList").get("id"), filterDto.getTodoListId())));
                 }
 
                 if (filterDto.getDependentTodoId() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("dependentTodo.id"), filterDto.getDependentTodoId())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("dependentTodo").get("id"), filterDto.getDependentTodoId())));
                 }
 
                 predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
