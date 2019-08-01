@@ -65,7 +65,7 @@ public class TodoListService extends BaseService<ITodoListRepository, TodoList> 
                 }
 
                 if (filterDto.getAssignedUsername() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("assignedUser.username"), "%" + filterDto.getAssignedUsername() + "%")));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("assignedUser").get("username"), "%" + filterDto.getAssignedUsername() + "%")));
                 }
 
                 predicates.addAll(applyBaseFilters(filterDto, criteriaBuilder, root));
