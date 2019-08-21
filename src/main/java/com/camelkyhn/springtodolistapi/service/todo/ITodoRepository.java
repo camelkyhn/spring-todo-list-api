@@ -12,4 +12,7 @@ public interface ITodoRepository extends JpaRepository<Todo, Long>, JpaSpecifica
     @Override
     @Query("select t from Todo t where t.id = :id and not (t.status = 2)")
     Optional<Todo> findById(@Param("id") Long id);
+
+    @Query("select t from Todo t where t.dependentTodo.id = :id")
+    Optional<Todo> findTodoDependentToThisId(@Param("id") Long id);
 }

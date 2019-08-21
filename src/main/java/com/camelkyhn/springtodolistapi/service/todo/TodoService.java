@@ -187,6 +187,13 @@ public class TodoService extends BaseService<ITodoRepository, Todo> implements I
                 throw new NotFoundException(Todo.class.getSimpleName());
             }
 
+            Optional<Todo> requiredTodo = repository.findTodoDependentToThisId(id);
+            if (requiredTodo.isPresent()) {
+                Todo temp = requiredTodo.get();
+                temp.setDependentTodo(null);
+                repository.save(temp);
+            }
+
             todo.setStatus(Status.Deleted);
             repository.save(todo);
             result.Success(true);
